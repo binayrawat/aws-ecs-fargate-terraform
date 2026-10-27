@@ -1,4 +1,5 @@
 data "aws_availability_zones" "available" {
+  #checkov:skip=CKV_AWS_394:Only the first az_count zones are used (slice below); a newly added AZ sorts last and never changes the subnet layout.
   state = "available"
 }
 
