@@ -16,6 +16,7 @@ concurrency:
 env:
   TF_VERSION: "1.17.0"
   TFLINT_VERSION: "v0.65.0"
+  CHECKOV_VERSION: "3.3.30"
 
 jobs:
   app:
@@ -28,7 +29,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version-file: app/go.mod
+          go-version: "1.27.x"
           cache: false
       - run: go vet ./...
       - run: go test -race -coverprofile=coverage.out ./...
@@ -95,10 +96,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: bridgecrewio/checkov-action@99bb2caf247dfd9f03cf984373bc6043d4e32ebf # v12.1347.0
-        with:
-          directory: .
-          config_file: .checkov.yaml
+      - name: Run Checkov
+        run: pipx run checkov==${{ env.CHECKOV_VERSION }} --config-file .checkov.yaml --directory .
 
   deploy:
     name: Deploy to dev

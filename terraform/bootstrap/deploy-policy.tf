@@ -13,6 +13,7 @@ data "aws_iam_policy_document" "github_deploy" {
   #checkov:skip=CKV_AWS_109:IAM permission management is limited to <project>-* roles and self-edits are denied.
   #checkov:skip=CKV_AWS_290:Same as CKV_AWS_111.
   #checkov:skip=CKV_AWS_289:Same as CKV_AWS_109.
+  #checkov:skip=CKV_AWS_107:ecr:GetAuthorizationToken only works with Resource "*"; pushes are limited to one repository.
   statement {
     sid       = "EcrLogin"
     actions   = ["ecr:GetAuthorizationToken"]

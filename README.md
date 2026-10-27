@@ -3,7 +3,7 @@
 [![CI/CD](https://github.com/binayrawat/aws-ecs-fargate-terraform/actions/workflows/ci.yml/badge.svg)](https://github.com/binayrawat/aws-ecs-fargate-terraform/actions/workflows/ci.yml)
 ![Terraform](https://img.shields.io/badge/Terraform-%E2%89%A51.10-7B42BC?logo=terraform&logoColor=white)
 ![AWS](https://img.shields.io/badge/AWS-ECS%20Fargate-FF9900?logo=amazonaws&logoColor=white)
-![Go](https://img.shields.io/badge/Go-1.23-00ADD8?logo=go&logoColor=white)
+![Go](https://img.shields.io/badge/Go-1.27-00ADD8?logo=go&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 A production-style reference for running a containerised service on **AWS ECS Fargate**:
@@ -113,7 +113,7 @@ repository variables exist, so the repo stays green for anyone who forks it.
 
 ## Run it locally
 
-Requires Go 1.23+ (and Docker for the image).
+Requires Go 1.27+ (1.23+ works for local dev) (and Docker for the image).
 
 ```bash
 make test          # go vet + race-enabled tests

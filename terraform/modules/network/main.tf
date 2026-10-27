@@ -71,6 +71,7 @@ resource "aws_subnet" "private" {
 
 resource "aws_eip" "nat" {
   count = var.enable_nat_gateway ? 1 : 0
+  #checkov:skip=CKV2_AWS_19:This EIP belongs to the NAT gateway, not an EC2 instance.
 
   domain = "vpc"
   tags   = { Name = "${var.name}-nat" }
