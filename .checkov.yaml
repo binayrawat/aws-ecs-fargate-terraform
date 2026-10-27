@@ -1,0 +1,30 @@
+# Checkov runs in CI on Terraform, the Dockerfile and the GitHub workflows.
+# Every skipped check below is a deliberate trade-off for a low-cost demo
+# environment, with the production answer noted next to it.
+compact: true
+quiet: true
+download-external-modules: false
+skip-path:
+  - .terraform
+skip-check:
+  # --- Logging & retention ---
+  - CKV_AWS_158  # CloudWatch log groups use AWS-owned encryption. Prod: customer-managed KMS key.
+  - CKV_AWS_338  # Log retention is 14-30 days to limit cost. Prod: 1 year+ per compliance policy.
+  - CKV_AWS_91   # No ALB access logs (needs a dedicated bucket). Prod: enable to an S3 log bucket.
+  - CKV_AWS_18   # No S3 access logging on the state bucket. Prod: log to a central logging bucket.
+
+  # --- Edge / TLS ---
+  - CKV2_AWS_28  # No WAF in front of the demo ALB. Prod: attach AWS WAF managed rule groups.
+  - CKV_AWS_150  # ALB deletion protection is a variable (off for dev so teardown works).
+  - CKV_AWS_2    # HTTP listener exists; it redirects to HTTPS whenever certificate_arn is set.
+  - CKV_AWS_103  # Same as above: TLS 1.2+ policy is applied on the HTTPS listener when enabled.
+  - CKV2_AWS_20  # Same as above: HTTP -> HTTPS redirect is conditional on a certificate.
+  - CKV_AWS_378  # ALB -> task traffic is HTTP inside the VPC; TLS terminates at the ALB.
+  - CKV_AWS_260  # Port 80 open to the internet on the ALB is the point of a public web service.
+
+  # --- State bucket ---
+  - CKV_AWS_144  # No cross-region replication for state. Versioning covers accidental changes.
+  - CKV2_AWS_62  # No S3 event notifications needed for a state bucket.
+
+  # --- Container image ---
+  - CKV_DOCKER_2 # HEALTHCHECK is defined in the ECS task definition (/server -healthcheck), not the image.
